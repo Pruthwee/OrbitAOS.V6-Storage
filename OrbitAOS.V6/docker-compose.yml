@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  orbitaos-v6:
+    image: orbitaos-v6:latest
+    build:
+      context: .
+      dockerfile: OrbitAOS.V6/Dockerfile
+    container_name: orbitaos-v6
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - TZ=UTC
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING:-Server=db;Database=OrbitAOSDb;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true}
+      - STATIC_FILE_CACHE_MAX_AGE_SECONDS=${STATIC_FILE_CACHE_MAX_AGE_SECONDS:-86400}
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "dotnet OrbitAOS.V6.dll --check-health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  app-network:
+    driver: bridge

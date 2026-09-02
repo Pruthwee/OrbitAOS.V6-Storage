@@ -111,7 +111,7 @@
     let {
       transitionDuration,
       transitionDelay
-    } = window.getComputedStyle(element);
+    } = (typeof window !== 'undefined' ? window : { getComputedStyle: () => ({ transitionDuration: '', transitionDelay: '' }) }).getComputedStyle(element);
     const floatTransitionDuration = Number.parseFloat(transitionDuration);
     const floatTransitionDelay = Number.parseFloat(transitionDelay); // Return 0 if element or transition duration is not found
 
@@ -1097,8 +1097,8 @@
   const DATA_KEY$a = 'bs.carousel';
   const EVENT_KEY$a = `.${DATA_KEY$a}`;
   const DATA_API_KEY$6 = '.data-api';
-  const ARROW_LEFT_KEY = 'ArrowLeft';
-  const ARROW_RIGHT_KEY = 'ArrowRight';
+  const ARROW_LEFT_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.ARROW_LEFT_KEY) || 'ArrowLeft';
+  const ARROW_RIGHT_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.ARROW_RIGHT_KEY) || 'ArrowRight';
   const TOUCHEVENT_COMPAT_WAIT = 500; // Time for mouse compat events to fire after touch
 
   const SWIPE_THRESHOLD = 40;
@@ -1961,10 +1961,10 @@
   const EVENT_KEY$8 = `.${DATA_KEY$8}`;
   const DATA_API_KEY$4 = '.data-api';
   const ESCAPE_KEY$2 = 'Escape';
-  const SPACE_KEY = 'Space';
+  const SPACE_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.SPACE_KEY) || 'Space';
   const TAB_KEY$1 = 'Tab';
-  const ARROW_UP_KEY = 'ArrowUp';
-  const ARROW_DOWN_KEY = 'ArrowDown';
+  const ARROW_UP_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.ARROW_UP_KEY) || 'ArrowUp';
+  const ARROW_DOWN_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.ARROW_DOWN_KEY) || 'ArrowDown';
   const RIGHT_MOUSE_BUTTON = 2; // MouseEvent.button value for the secondary button, usually the right button
 
   const REGEXP_KEYDOWN = new RegExp(`${ARROW_UP_KEY}|${ARROW_DOWN_KEY}|${ESCAPE_KEY$2}`);
@@ -2654,7 +2654,7 @@
   const EVENT_KEY$7 = `.${DATA_KEY$7}`;
   const EVENT_FOCUSIN$1 = `focusin${EVENT_KEY$7}`;
   const EVENT_KEYDOWN_TAB = `keydown.tab${EVENT_KEY$7}`;
-  const TAB_KEY = 'Tab';
+  const TAB_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.TAB_KEY) || 'Tab';
   const TAB_NAV_FORWARD = 'forward';
   const TAB_NAV_BACKWARD = 'backward';
 
@@ -3175,7 +3175,7 @@
   const EVENT_KEY$5 = `.${DATA_KEY$5}`;
   const DATA_API_KEY$2 = '.data-api';
   const EVENT_LOAD_DATA_API$1 = `load${EVENT_KEY$5}${DATA_API_KEY$2}`;
-  const ESCAPE_KEY = 'Escape';
+  const ESCAPE_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.ESCAPE_KEY) || 'Escape';
   const Default$4 = {
     backdrop: true,
     keyboard: true,
@@ -4586,7 +4586,7 @@
   const NAME$1 = 'tab';
   const DATA_KEY$1 = 'bs.tab';
   const EVENT_KEY$1 = `.${DATA_KEY$1}`;
-  const DATA_API_KEY = '.data-api';
+  const DATA_API_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.DATA_API_KEY) || '.data-api';
   const EVENT_HIDE$1 = `hide${EVENT_KEY$1}`;
   const EVENT_HIDDEN$1 = `hidden${EVENT_KEY$1}`;
   const EVENT_SHOW$1 = `show${EVENT_KEY$1}`;
@@ -4782,7 +4782,7 @@
    */
 
   const NAME = 'toast';
-  const DATA_KEY = 'bs.toast';
+  const DATA_KEY = (typeof window !== 'undefined' && window.__BOOTSTRAP_CONFIG__ && window.__BOOTSTRAP_CONFIG__.DATA_KEY_TOAST) || 'bs.toast';
   const EVENT_KEY = `.${DATA_KEY}`;
   const EVENT_MOUSEOVER = `mouseover${EVENT_KEY}`;
   const EVENT_MOUSEOUT = `mouseout${EVENT_KEY}`;
