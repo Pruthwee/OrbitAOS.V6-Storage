@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -14,14 +14,19 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7073;http://localhost:5008",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:7073;http://localhost:5008",
+        "AWS_SSM_APP_URL_PARAM": "/OrbitAOS/V6/ApplicationUrl",
+        "AWS_SSM_SSL_PORT_PARAM": "/OrbitAOS/V6/SslPort"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AWS_SSM_APP_URL_PARAM": "/OrbitAOS/V6/IISExpress/ApplicationUrl",
+        "AWS_SSM_SSL_PORT_PARAM": "/OrbitAOS/V6/IISExpress/SslPort"
       }
     }
   }

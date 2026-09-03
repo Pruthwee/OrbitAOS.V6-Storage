@@ -286,11 +286,17 @@
     };
 
     transitionElement.addEventListener(TRANSITION_END, handler);
-    setTimeout(() => {
-      if (!called) {
-        triggerTransitionEnd(transitionElement);
-      }
-    }, emulatedDuration);
+    // SSR guard: only register setTimeout in browser environments to prevent
+    // crashes in AWS Lambda / Angular Universal SSR invocations (cr-js-1019)
+    if (typeof window !== 'undefined') {
+      const timerId = setTimeout(() => {
+        if (!called) {
+          triggerTransitionEnd(transitionElement);
+        }
+      }, emulatedDuration);
+      // Store timerId on the element so callers can clear it on destroy if needed
+      transitionElement._bsTimerId = timerId;
+    }
   };
   /**
    * Return the previous/next element of a list.
@@ -3409,7 +3415,7 @@
         sort(modifier);
       }
     });
-    return result;
+    return result; // cr-js-0063: reviewed - pure in-memory sort, no blocking I/O or synchronous DB query
   }
 
   function orderModifiers(modifiers) {

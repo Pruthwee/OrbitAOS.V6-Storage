@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ORBIT</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* cr-dotnet-1011: Reference the WebOptimizer-bundled and minified CSS bundle.
+       WebOptimizer appends a content-based fingerprint hash to the URL so that
+       AWS CloudFront can cache the bundle immutably at the edge. *@
+    <link rel="stylesheet" href="~/css/bundle.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OrbitAOS.V6.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -44,7 +47,10 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* cr-dotnet-1011: Reference the WebOptimizer-bundled and minified JS bundle.
+       The fingerprinted URL enables long-lived immutable caching at AWS CloudFront
+       edge locations, reducing origin egress costs. *@
+    <script src="~/js/bundle.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
