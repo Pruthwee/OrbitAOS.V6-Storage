@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 using OrbitAOS.V6.Data;
 
@@ -13,6 +14,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -29,7 +31,19 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+// cz-dotnet-1013: Configure StaticFileOptions with cache-control headers for CDN/CloudFront caching
+var staticFileCacheMaxAge = int.TryParse(Environment.GetEnvironmentVariable("STATIC_FILES_CACHE_MAX_AGE_SECONDS"), out var parsedMaxAge)
+    ? parsedMaxAge
+    : 86400; // default: 1 day
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+            $"public, max-age={staticFileCacheMaxAge}, s-maxage={staticFileCacheMaxAge}";
+        ctx.Context.Response.Headers[HeaderNames.Vary] = "Accept-Encoding";
+    }
+});
 
 app.UseRouting();
 
@@ -40,5 +54,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapHealthChecks("/health");
 
 app.Run();

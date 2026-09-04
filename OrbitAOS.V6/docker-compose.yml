@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  orbitaos-v6:
+    image: orbitaos-v6:latest
+    build:
+      context: ..
+      dockerfile: OrbitAOS.V6/Dockerfile
+    container_name: orbitaos-v6
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING:-Server=db;Database=OrbitAOS;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true}
+      - ApiUrls__AspNetCoreDocsUrl=${ASPNETCORE_DOCS_URL:-https://docs.microsoft.com/aspnet/core}
+      - STATIC_FILES_CACHE_MAX_AGE_SECONDS=${STATIC_FILES_CACHE_MAX_AGE_SECONDS:-86400}
+    volumes:
+      - orbitaos-logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "dotnet-monitor || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  orbitaos-logs:
+    driver: local
