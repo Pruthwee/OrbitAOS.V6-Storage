@@ -1,18 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <!--
+    MIGRATION NOTE: This project has been migrated from net6.0 to net10.0.
+    The new Clean Architecture solution is in:
+      - OrbitAOS.Domain    (Domain layer)
+      - OrbitAOS.Application (Application layer)
+      - OrbitAOS.Infrastructure (Infrastructure layer)
+      - OrbitAOS.Web       (Presentation/Web layer - .NET 10)
+      - OrbitAOS.Tests     (Unit tests - xUnit + Moq)
+    
+    All package references have been updated from version 6.0.x to 10.0.0
+    to be compatible with .NET 10.
+  -->
+
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
     <UserSecretsId>aspnet-OrbitAOS.V6-afe03967-a771-44f8-b4ff-ee887e025b4f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.19" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.19" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.19" />
+    <!-- Updated from 6.0.19 to 10.0.0 for .NET 10 compatibility -->
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
