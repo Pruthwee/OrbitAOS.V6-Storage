@@ -1,8 +1,10 @@
-// Migration updated for EF Core 10 compatibility.
+// Migration updated for EF Core 8 compatibility.
 // Breaking changes addressed:
-//   - Column(nullable: false/true) → IsRequired() / IsRequired(false) in EF Core 6+
-//   - SqlServerValueGenerationStrategy.IdentityColumn → UseIdentityColumn() annotation
-//   - HasName() on indexes → HasDatabaseName() in EF Core 5+
+//   - Removed SqlServerValueGenerationStrategy.IdentityColumn (deprecated in EF Core 6+)
+//   - Replaced with .Annotation("SqlServer:Identity", "1, 1")
+//   - Updated column definitions to use explicit type: parameter (EF Core 6+ style)
+//   - Removed deprecated using Microsoft.EntityFrameworkCore.Metadata
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OrbitAOS.V6.Data.Migrations

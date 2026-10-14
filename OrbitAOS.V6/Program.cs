@@ -1,7 +1,3 @@
-// OrbitAOS.V6 - Migrated from net6.0 to net10.0
-// NOTE: For the full Clean Architecture solution, see OrbitAOS.Web project.
-// This file retains the original single-project structure updated for .NET 10.
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OrbitAOS.V6.Data;
@@ -9,7 +5,7 @@ using OrbitAOS.V6.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Updated: GetConnectionString returns nullable string in .NET 10 - use null-coalescing
+// Issue-9 fix: GetConnectionString() returns nullable string in .NET 8 - use null-coalescing throw
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -18,10 +14,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// Updated: AddDefaultIdentity with explicit options for .NET 10
+// Configure ASP.NET Core Identity with password policies
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
