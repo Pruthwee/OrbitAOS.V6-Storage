@@ -2,16 +2,16 @@
 @inject SignInManager<OrbitAOS.V6.Domain.Entities.ApplicationUser> SignInManager
 @inject UserManager<OrbitAOS.V6.Domain.Entities.ApplicationUser> UserManager
 
-<%--
+@*
     _LoginPartial.cshtml - Updated for .NET 10 Clean Architecture
-    
+
     Migration changes:
-    - IdentityUser → ApplicationUser (custom domain entity)
-    - SignInManager<IdentityUser> → SignInManager<ApplicationUser>
-    - UserManager<IdentityUser> → UserManager<ApplicationUser>
+    - IdentityUser -> ApplicationUser (custom domain entity)
+    - SignInManager<IdentityUser> -> SignInManager<ApplicationUser>
+    - UserManager<IdentityUser> -> UserManager<ApplicationUser>
     - Identity UI Razor Pages remain at /Identity/Account/* paths
     - asp-* Tag Helpers replace @Html.ActionLink() and @Html.BeginForm()
---%>
+*@
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

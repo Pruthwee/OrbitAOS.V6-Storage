@@ -116,7 +116,7 @@ try
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     // AutoMapper profiles
-    builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+    builder.Services.AddAutoMapper(typeof(MappingProfile));
 
     // FluentValidation (replaces DataAnnotations-only validation)
     builder.Services.AddFluentValidationAutoValidation();

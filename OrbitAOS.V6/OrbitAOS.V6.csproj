@@ -25,12 +25,10 @@
     </PackageReference>
     <!-- Added for Clean Architecture: MediatR for CQRS pattern in Application layer -->
     <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <!-- FluentValidation for Application layer validation -->
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <!-- AutoMapper for DTO/ViewModel mapping -->
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <!-- Serilog for structured logging -->
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
