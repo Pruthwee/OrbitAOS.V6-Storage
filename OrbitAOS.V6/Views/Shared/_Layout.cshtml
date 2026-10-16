@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ORBIT</title>
+    <title>@ViewData["Title"] - OrbitAOS</title>
+    <%-- Bootstrap 5 (compatible with .NET 10 / ASP.NET Core) --%>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OrbitAOS.V6.styles.css" asp-append-version="true" />
@@ -12,8 +13,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OrbitAOS.V6</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <%-- asp-* Tag Helpers replace @Html.ActionLink() from legacy MVC --%>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OrbitAOS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -26,6 +29,7 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <%-- _LoginPartial uses ASP.NET Core Identity (replaces Forms Authentication) --%>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -39,9 +43,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - OrbitAOS.V6 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - OrbitAOS -
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &nbsp;|&nbsp;
+            <span class="text-muted small">Powered by .NET 10</span>
         </div>
     </footer>
+
+    <%-- jQuery and Bootstrap JS (served from wwwroot/lib - replaces /Scripts folder) --%>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

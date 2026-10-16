@@ -1,26 +1,45 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<OrbitAOS.V6.Domain.Entities.ApplicationUser> SignInManager
+@inject UserManager<OrbitAOS.V6.Domain.Entities.ApplicationUser> UserManager
+
+<%--
+    _LoginPartial.cshtml - Updated for .NET 10 Clean Architecture
+    
+    Migration changes:
+    - IdentityUser → ApplicationUser (custom domain entity)
+    - SignInManager<IdentityUser> → SignInManager<ApplicationUser>
+    - UserManager<IdentityUser> → UserManager<ApplicationUser>
+    - Identity UI Razor Pages remain at /Identity/Account/* paths
+    - asp-* Tag Helpers replace @Html.ActionLink() and @Html.BeginForm()
+--%>
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        <a class="nav-link text-white"
+           asp-area="Identity"
+           asp-page="/Account/Manage/Index"
+           title="Manage">
+            Hello @User.Identity?.Name!
+        </a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        <form class="form-inline"
+              asp-area="Identity"
+              asp-page="/Account/Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
 </ul>

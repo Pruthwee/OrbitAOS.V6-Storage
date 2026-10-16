@@ -1,9 +1,44 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p>
+        This application has been migrated from <strong>ASP.NET MVC 6.0 (.NET 6)</strong>
+        to <strong>ASP.NET Core MVC on .NET 10</strong> using Clean Architecture.
+    </p>
+    <p>
+        Learn about
+        <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener">
+            building Web apps with ASP.NET Core on .NET 10
+        </a>.
+    </p>
+    <hr />
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Domain Layer</h5>
+                    <p class="card-text">Entities, domain events, and repository interfaces.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Application Layer</h5>
+                    <p class="card-text">CQRS with MediatR, FluentValidation, AutoMapper.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Infrastructure Layer</h5>
+                    <p class="card-text">EF Core 10, Identity, repositories, services.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
