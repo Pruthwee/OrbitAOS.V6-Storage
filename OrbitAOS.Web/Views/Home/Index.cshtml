@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to OrbitAOS</h1>
+    <p>
+        This application has been migrated from ASP.NET MVC 6.0 to
+        <strong>ASP.NET Core MVC on .NET 8</strong> using Clean Architecture.
+    </p>
+    <p>
+        Learn about <a href="https://docs.microsoft.com/aspnet/core" target="_blank" rel="noopener">
+            building Web apps with ASP.NET Core
+        </a>.
+    </p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Domain Layer</h5>
+                <p class="card-text">
+                    Core business entities and repository interfaces, independent of any framework.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Application Layer</h5>
+                <p class="card-text">
+                    Business logic services and DTOs orchestrating domain operations.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Infrastructure Layer</h5>
+                <p class="card-text">
+                    EF Core data access, Identity, and repository implementations.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
