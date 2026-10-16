@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>OrbitAOS.V8.Tests</RootNamespace>
+    <AssemblyName>OrbitAOS.V8.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrbitAOS.V8.Application\OrbitAOS.V8.Application.csproj" />
+    <ProjectReference Include="..\OrbitAOS.V8.Domain\OrbitAOS.V8.Domain.csproj" />
+    <ProjectReference Include="..\OrbitAOS.V8.Infrastructure\OrbitAOS.V8.Infrastructure.csproj" />
+    <ProjectReference Include="..\OrbitAOS.V8.Web\OrbitAOS.V8.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- xUnit test framework -->
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+
+    <!-- Moq for mocking -->
+    <PackageReference Include="Moq" Version="4.20.72" />
+
+    <!-- EF Core InMemory for repository tests -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+
+    <!-- ASP.NET Core MVC testing utilities -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+
+    <!-- FluentAssertions for readable assertions -->
+    <PackageReference Include="FluentAssertions" Version="6.12.1" />
+  </ItemGroup>
+
+</Project>
