@@ -27,6 +27,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <!-- Optional: Newtonsoft.Json compatibility -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
+    <!-- Health checks EF Core integration -->
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
