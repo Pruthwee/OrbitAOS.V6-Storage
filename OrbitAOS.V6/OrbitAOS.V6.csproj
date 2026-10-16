@@ -1,19 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <!-- Upgraded from net6.0 to net8.0 (LTS) -->
+    <!-- Upgraded from net6.0 to net8.0 (LTS) - issue-1 fix -->
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-OrbitAOS.V6-afe03967-a771-44f8-b4ff-ee887e025b4f</UserSecretsId>
   </PropertyGroup>
 
+  <!-- Exclude subdirectory projects (src/ and tests/) from this single-project build -->
   <ItemGroup>
-    <!-- All packages upgraded from 6.0.x to 8.0.0 for .NET 8 compatibility -->
+    <Compile Remove="src\**\*" />
+    <Compile Remove="tests\**\*" />
+    <Content Remove="src\**\*" />
+    <Content Remove="tests\**\*" />
+    <EmbeddedResource Remove="src\**\*" />
+    <EmbeddedResource Remove="tests\**\*" />
+    <None Remove="src\**\*" />
+    <None Remove="tests\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- All packages upgraded from 6.0.x to 8.0.0 for .NET 8 compatibility - issue-2 fix -->
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <!-- EF Core Tools with PrivateAssets to prevent inclusion in published output - issue-22 fix -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

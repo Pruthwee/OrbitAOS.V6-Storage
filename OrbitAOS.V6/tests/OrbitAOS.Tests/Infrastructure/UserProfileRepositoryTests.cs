@@ -3,6 +3,7 @@ using OrbitAOS.Domain.Entities;
 using OrbitAOS.Infrastructure.Data;
 using OrbitAOS.Infrastructure.Repositories;
 using FluentAssertions;
+using Xunit;
 
 namespace OrbitAOS.Tests.Infrastructure;
 

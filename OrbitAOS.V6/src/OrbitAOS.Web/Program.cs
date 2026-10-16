@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using OrbitAOS.Application;
 using OrbitAOS.Infrastructure;
 using OrbitAOS.Infrastructure.Data;
+using OrbitAOS.Web.Filters;
+using OrbitAOS.Web.Middleware;
 
 // ─── Application Builder ─────────────────────────────────────────────────────
 var builder = WebApplication.CreateBuilder(args);
 
 // ─── Configuration ────────────────────────────────────────────────────────────
+// Null guard added for .NET 8 nullable reference type compliance (issue-6)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -37,10 +40,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ─── MVC Controllers with Views ──────────────────────────────────────────────
-builder.Services.AddControllersWithViews();
+// ─── MVC Controllers with Views + Global Exception Filter ────────────────────
+// GlobalExceptionFilter replaces legacy HandleErrorAttribute (issue-17)
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+});
 
 // ─── Cookie Authentication (replaces Forms Authentication from web.config) ───
+// Explicitly configured for .NET 8 security best practices (issue-15)
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -51,6 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // ─── Session State (replaces System.Web.SessionState) ────────────────────────
+// Required for HttpContext.Session usage (issue-9)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -60,9 +69,11 @@ builder.Services.AddSession(options =>
 });
 
 // ─── Response Caching (replaces [OutputCache] attribute) ─────────────────────
+// Required for [ResponseCache] attribute on HomeController.Error() (issue-14)
 builder.Services.AddResponseCaching();
 
 // ─── HTTP Context Accessor (replaces System.Web.HttpContext.Current) ─────────
+// Required for services that inject IHttpContextAccessor (issue-10)
 builder.Services.AddHttpContextAccessor();
 
 // ─── Build Application ────────────────────────────────────────────────────────
@@ -88,13 +99,16 @@ app.UseHttpsRedirection();
 // Static files from wwwroot (replaces /Content and /Scripts folders)
 app.UseStaticFiles();
 
+// Custom request logging middleware (replaces legacy IHttpModule) (issue-18)
+app.UseRequestLogging();
+
 // Routing middleware (replaces RouteConfig.cs in App_Start)
 app.UseRouting();
 
 // Session middleware (must be after UseRouting, before UseAuthentication)
 app.UseSession();
 
-// Response caching middleware
+// Response caching middleware (issue-14)
 app.UseResponseCaching();
 
 // Authentication middleware (replaces FormsAuthentication module)

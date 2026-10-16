@@ -5,6 +5,7 @@ using OrbitAOS.Application.Services;
 using OrbitAOS.Domain.Entities;
 using OrbitAOS.Domain.Interfaces;
 using FluentAssertions;
+using Xunit;
 
 namespace OrbitAOS.Tests.Services;
 

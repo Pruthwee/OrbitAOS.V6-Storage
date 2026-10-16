@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OrbitAOS.V6.Data;
+using OrbitAOS.V6.Filters;
+using OrbitAOS.V6.Middleware;
 
 // ─── Application Builder ─────────────────────────────────────────────────────
 // .NET 8 minimal hosting model (replaces Global.asax + App_Start configuration)
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ─── Database Configuration ───────────────────────────────────────────────────
 // Connection string from appsettings.json (replaces web.config connectionStrings)
+// Null guard added for .NET 8 nullable reference type compliance (issue-6)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -24,16 +27,41 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
     options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ─── MVC Controllers with Views ──────────────────────────────────────────────
+// ─── Cookie Authentication (replaces Forms Authentication from web.config) ───
+// Explicitly configured for .NET 8 security best practices (issue-15)
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+});
+
+// ─── MVC Controllers with Views + Global Exception Filter ────────────────────
 // Replaces App_Start/FilterConfig.cs and RouteConfig.cs
-builder.Services.AddControllersWithViews();
+// GlobalExceptionFilter replaces legacy HandleErrorAttribute (issue-17)
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+});
+
+// ─── Response Caching (replaces [OutputCache] attribute) ─────────────────────
+// Required for [ResponseCache] attribute on HomeController.Error() (issue-14)
+builder.Services.AddResponseCaching();
 
 // ─── Session State ────────────────────────────────────────────────────────────
-// Replaces System.Web.SessionState
+// Replaces System.Web.SessionState (issue-9)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -43,7 +71,7 @@ builder.Services.AddSession(options =>
 });
 
 // ─── HTTP Context Accessor ────────────────────────────────────────────────────
-// Replaces System.Web.HttpContext.Current
+// Replaces System.Web.HttpContext.Current (issue-10)
 builder.Services.AddHttpContextAccessor();
 
 // ─── Build Application ────────────────────────────────────────────────────────
@@ -69,11 +97,17 @@ app.UseHttpsRedirection();
 // Static files from wwwroot (replaces /Content and /Scripts)
 app.UseStaticFiles();
 
+// Custom request logging middleware (replaces legacy IHttpModule) (issue-18)
+app.UseRequestLogging();
+
 // Routing (replaces App_Start/RouteConfig.cs)
 app.UseRouting();
 
-// Session middleware
+// Session middleware (must be after UseRouting, before UseAuthentication)
 app.UseSession();
+
+// Response caching middleware (issue-14)
+app.UseResponseCaching();
 
 // Authentication (replaces FormsAuthentication HTTP module)
 app.UseAuthentication();
