@@ -14,6 +14,38 @@ using Xunit;
 namespace OrbitAOS.V6.Tests.Infrastructure;
 
 /// <summary>
+/// Concrete test implementation of BaseEntity for repository tests.
+/// BaseEntity is abstract, so we need a concrete subclass for testing.
+/// </summary>
+public class BaseEntityTestImpl : BaseEntity
+{
+    public string Name { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Test-specific DbContext that includes BaseEntityTestImpl in the model.
+/// </summary>
+public class TestApplicationDbContext : ApplicationDbContext
+{
+    public TestApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<BaseEntityTestImpl> TestEntities => Set<BaseEntityTestImpl>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<BaseEntityTestImpl>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).HasMaxLength(200);
+        });
+    }
+}
+
+/// <summary>
 /// Unit tests for GenericRepository using EF Core InMemory provider.
 /// Demonstrates testing the Infrastructure layer in isolation.
 ///
@@ -22,7 +54,7 @@ namespace OrbitAOS.V6.Tests.Infrastructure;
 /// </summary>
 public class GenericRepositoryTests : IDisposable
 {
-    private readonly ApplicationDbContext _context;
+    private readonly TestApplicationDbContext _context;
     private readonly GenericRepository<BaseEntityTestImpl> _repository;
 
     public GenericRepositoryTests()
@@ -31,7 +63,7 @@ public class GenericRepositoryTests : IDisposable
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        _context = new ApplicationDbContext(options);
+        _context = new TestApplicationDbContext(options);
         _repository = new GenericRepository<BaseEntityTestImpl>(_context);
     }
 
@@ -143,17 +175,43 @@ public class GenericRepositoryTests : IDisposable
         result.Should().BeNull();
     }
 
+    [Fact]
+    public async Task UpdateAsync_ShouldModifyEntity()
+    {
+        // Arrange
+        var entity = await _repository.AddAsync(new BaseEntityTestImpl { Name = "Original" });
+        entity.Name = "Updated";
+
+        // Act
+        await _repository.UpdateAsync(entity);
+        var result = await _repository.GetByIdAsync(entity.Id);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Name.Should().Be("Updated");
+    }
+
+    [Fact]
+    public void Query_ShouldReturnIQueryable()
+    {
+        // Act
+        var query = _repository.Query();
+
+        // Assert
+        query.Should().NotBeNull();
+        query.Should().BeAssignableTo<IQueryable<BaseEntityTestImpl>>();
+    }
+
+    [Fact]
+    public void Constructor_WithNullContext_ShouldThrowArgumentNullException()
+    {
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() =>
+            new GenericRepository<BaseEntityTestImpl>(null!));
+    }
+
     public void Dispose()
     {
         _context.Dispose();
     }
-}
-
-/// <summary>
-/// Concrete test implementation of BaseEntity for repository tests.
-/// BaseEntity is abstract, so we need a concrete subclass for testing.
-/// </summary>
-public class BaseEntityTestImpl : BaseEntity
-{
-    public string Name { get; set; } = string.Empty;
 }
