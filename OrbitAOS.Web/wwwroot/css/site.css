@@ -1,0 +1,23 @@
+/* site.css - OrbitAOS.Web
+   Migrated from OrbitAOS.V6/wwwroot/css/site.css
+   Static files now served from wwwroot (replaces legacy /Content folder)
+*/
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}

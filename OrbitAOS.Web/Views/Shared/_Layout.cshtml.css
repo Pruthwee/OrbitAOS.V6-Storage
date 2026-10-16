@@ -1,0 +1,16 @@
+/* _Layout.cshtml.css - OrbitAOS.Web
+   Component-scoped CSS for the shared layout.
+   Migrated from OrbitAOS.V6 to OrbitAOS.Web.
+*/
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
