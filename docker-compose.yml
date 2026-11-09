@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  orbitaossmm:
+    image: orbitaossmm:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection:?set ConnectionStrings__DefaultConnection}
+    volumes:
+      - orbitaossmm-logs:/app/logs
+      - ./OrbitAOS.V6/appsettings.json:/app/appsettings.json:ro
+
+volumes:
+  orbitaossmm-logs:
